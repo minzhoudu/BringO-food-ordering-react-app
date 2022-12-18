@@ -11,7 +11,9 @@ const Cart = ({ onCloseCart }) => {
     const isCartEmpty = cart_ctx.items.length > 0;
 
     const removeCartItemHandler = (id) => {};
-    const addCartItemHandler = (item) => {};
+    const addCartItemHandler = (item) => {
+        cart_ctx.addItem({ ...item, amount: 1 });
+    };
 
     const cartItems = (
         <ul className={classes["cart-items"]}>
