@@ -7,7 +7,7 @@ const HeaderCardButton = ({ onOpenCart }) => {
     const card_ctx = useContext(cartContext);
 
     const numberOfCartItems = card_ctx.items.reduce((currValue, item) => {
-        return currValue + item.totalAmount;
+        return currValue + item.amount;
     }, 0);
 
     return (
