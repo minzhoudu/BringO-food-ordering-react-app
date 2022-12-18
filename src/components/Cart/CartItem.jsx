@@ -1,7 +1,7 @@
 import classes from "./CartItem.module.css";
 
 const CartItem = ({ item, addItem, removeItem }) => {
-    const price = `$${item.price}`;
+    const price = `$${item.price.toFixed(2)}`;
 
     return (
         <li className={classes["cart-item"]}>
