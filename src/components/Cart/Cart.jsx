@@ -10,7 +10,9 @@ const Cart = ({ onCloseCart }) => {
     const totalAmount = `$${cart_ctx.totalAmount.toFixed(2)}`;
     const isCartEmpty = cart_ctx.items.length > 0;
 
-    const removeCartItemHandler = (id) => {};
+    const removeCartItemHandler = (id) => {
+        cart_ctx.removeItem(id);
+    };
     const addCartItemHandler = (item) => {
         cart_ctx.addItem({ ...item, amount: 1 });
     };

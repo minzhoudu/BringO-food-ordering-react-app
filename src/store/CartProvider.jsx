@@ -10,7 +10,7 @@ const cartReducer = (state, action) => {
     switch (action.type) {
         case "ADD_ITEM":
             const updatedTotalAmound = state.totalAmount + action.item.price * action.item.amount;
-            const existingCartItem = state.items.find((item) => item.id === action.item.id);
+            const existingCartItem = state.items.find((item) => item.id === action.item.id) || null;
             let updatedItems;
 
             if (existingCartItem) {
@@ -19,7 +19,6 @@ const cartReducer = (state, action) => {
                     amount: existingCartItem.amount + action.item.amount,
                 };
                 updatedItems = [...state.items];
-                // updatedItems[existingCartItem.id] = updatedItem;
                 updatedItems[updatedItems.indexOf(existingCartItem)] = updatedItem;
             } else {
                 updatedItems = state.items.concat(action.item);
@@ -28,6 +27,28 @@ const cartReducer = (state, action) => {
             return {
                 items: updatedItems,
                 totalAmount: updatedTotalAmound,
+            };
+
+        case "REMOVE_ITEM":
+            let currentCart = [...state.items];
+            const currentItem = currentCart.find((item) => item.id === action.id || null);
+            // const currentItemIndex2 = currentCart.findIndex((item) => item.id === action.id); better approach than find
+            // const currentItem2 = currentCart[currentItem2];
+            const updatedAmount = state.totalAmount.toFixed(2) - currentItem.price;
+            if (currentItem.amount > 1) {
+                const itemUpdated = {
+                    ...currentItem,
+                    amount: currentItem.amount - 1,
+                };
+                currentCart[currentCart.indexOf(currentItem)] = itemUpdated;
+                // currCart[currentItemIndex2] = itemUpdated
+            } else {
+                currentCart = currentCart.filter((item) => item.id !== action.id);
+            }
+
+            return {
+                items: currentCart,
+                totalAmount: updatedAmount,
             };
 
         default:
