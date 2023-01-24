@@ -27,3 +27,22 @@
     object-fit: cover;
     transform: rotateZ(-5deg) translateY(-4rem) translateX(-1rem);
 }
+
+.logo {
+    height: 3rem;
+}
+
+.logo img {
+    height: 100%;
+    width: 100%;
+}
+
+@media screen and (max-width: 500px) {
+    .header {
+        padding: 0 2%;
+    }
+    .logo {
+        height: 2.7rem;
+        width: 6rem;
+    }
+}
