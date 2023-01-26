@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 import MealItem from "./MealItem/MealItem";
 import Card from "../UI/Card";
@@ -7,39 +7,53 @@ import classes from "./AvailableMeals.module.css";
 const AvailableMeals = () => {
     const [meals, setmMeals] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    const fetchMeals = useCallback(async () => {
-        const res = await fetch("https://bringo-3df0e-default-rtdb.europe-west1.firebasedatabase.app/meals.json");
-        const data = await res.json();
-
-        const loadedMeals = [];
-        for (const key in data) {
-            loadedMeals.push({
-                id: key,
-                name: data[key].name,
-                description: data[key].description,
-                price: data[key].price,
-            });
-        }
-
-        setmMeals(loadedMeals);
-        setIsLoading(false);
-    }, []);
+    const [httpError, setHttpError] = useState();
 
     useEffect(() => {
-        fetchMeals();
-    }, [fetchMeals]);
+        const fetchMeals = async () => {
+            const res = await fetch("https://bringo-3df0e-default-rtdb.europe-west1.firebasedatabase.app/meals.json");
+            if (!res.ok) {
+                throw new Error("Something went wrong while fetching the data from Firebase");
+            }
+
+            const data = await res.json();
+
+            const loadedMeals = [];
+            for (const id in data) {
+                loadedMeals.push({
+                    id,
+                    ...data[id],
+                });
+            }
+
+            setmMeals(loadedMeals);
+            setIsLoading(false);
+        };
+
+        fetchMeals().catch((error) => {
+            setIsLoading(false);
+            setHttpError(error.message);
+        });
+    }, []);
 
     const mealsList = meals.map((meal) => <MealItem key={meal.id} item={meal} />);
 
+    // LOADER
     if (isLoading) {
-        //loader
         return (
-            <div class={classes["lds-facebook"]}>
+            <div className={classes["lds-facebook"]}>
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
+        );
+    }
+
+    if (httpError) {
+        return (
+            <section>
+                <p className={classes.mealsError}>{httpError}</p>
+            </section>
         );
     }
 
