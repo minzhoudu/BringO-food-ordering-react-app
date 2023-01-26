@@ -10,7 +10,7 @@
 
 .modal {
     position: fixed;
-    top: 20vh;
+    top: 15vh;
     left: 5%;
     width: 90%;
     background-color: white;
@@ -24,8 +24,7 @@
 @media (min-width: 768px) {
     .modal {
         width: 40rem;
-        left: 50%;
-        translate: -50%;
+        left: calc(50% - 20rem);
     }
 }
 
