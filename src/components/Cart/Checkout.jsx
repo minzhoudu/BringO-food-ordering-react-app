@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import COHelpers from "../../helpers/checkoutHelpers";
 import classes from "./Checkout.module.css";
 
-const Checkout = ({ onCloseCart }) => {
+const Checkout = ({ onCloseCart, onSubmitOrder }) => {
     const [formInputsValidity, setFormInputsValidity] = useState({
         name: true,
         street: true,
@@ -37,7 +37,14 @@ const Checkout = ({ onCloseCart }) => {
             return;
         }
 
+        const userData = {
+            name: nameInputRef.current.value,
+            street: streetInputRef.current.value,
+            city: cityInputRef.current.value,
+            postalCode: postalCodeInputRef.current.value,
+        };
         //submit data
+        onSubmitOrder(userData);
     };
 
     return (
